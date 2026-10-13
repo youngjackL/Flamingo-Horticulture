@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Flamingo Horticulture CDU Department Head</title>
+    <link rel="stylesheet" href="/css/styles.css">
+</head>
+<body>
+    <nav class="top-nav">
+        <div class="nav-brand">CDU Department Head</div>
+        <div class="nav-tabs" role="tablist">
+            <button class="nav-tab active" data-tab="dashboard" role="tab">Dashboard</button>
+            <button class="nav-tab" data-tab="scanner" role="tab">AI Camera Scanner</button>
+            <button class="nav-tab" data-tab="logs" role="tab">Batch Scan Logs</button>
+            <button class="nav-tab" data-tab="forecasts" role="tab">Harvest Forecasts</button>
+        </div>
+    </nav>
+
+    <main class="page-container">
+        <section id="page-dashboard" class="page active" role="tabpanel" aria-labelledby="dashboard-tab">
+            <div class="dashboard-grid">
+                <div class="card summary-card active-blocks">
+                    <h3>Active Blocks</h3>
+                    <div class="card-value" id="active-blocks-count">--</div>
+                </div>
+                <div class="card summary-card total-projected-yield">
+                    <h3>Total Projected Yield</h3>
+                    <div class="card-value" id="total-projected-yield">--</div>
+                </div>
+                <div class="card summary-card avg-growth-velocity">
+                    <h3>Avg Growth Velocity</h3>
+                    <div class="card-value" id="avg-growth-velocity">-- cm/day</div>
+                </div>
+                <div class="card summary-card system-confidence">
+                    <h3>System Confidence</h3>
+                    <div class="card-value" id="system-confidence">--%</div>
+                </div>
+            </div>
+
+            <div class="recent-telemetry">
+                <h3>Recent Scan Telemetry</h3>
+                <div class="telemetry-feed" id="telemetry-feed">
+                    <!-- Populated by JavaScript -->
+                </div>
+            </div>
+        </section>
+
+        <section id="page-scanner" class="page" role="tabpanel" aria-labelledby="scanner-tab">
+            <div class="scanner-section">
+                <div class="department-selector">
+                    <button class="crop-btn active" data-crop="roses">Roses</button>
+                    <button class="crop-btn" data-crop="carnations">Carnations</button>
+                    <button class="crop-btn" data-crop="chrysanthemums">Chrysanthemums</button>
+                </div>
+
+                <div class="reference-sticker-selector">
+                    <label>Reference Sticker Color:</label>
+                    <div class="sticker-option yellow active" data-sticker="yellow">Yellow</div>
+                    <div class="sticker-option red" data-sticker="red">Red</div>
+                </div>
+
+                <div class="camera-frame">
+                    <label for="imageUpload" class="file-upload-label">
+                        📷 Capture or Upload Crop Frame
+                        <input type="file" id="imageUpload" accept="image/*" style="display: none;">
+                    </label>
+                    <div id="imagePlaceholder" class="placeholder-image">
+                        <svg width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                            <circle cx="12" cy="12" r="10"/>
+                            <line x1="2" y1="2" x2="22" y2="22"/>
+                            <line x1="2" y1="22" x2="22" y2="2"/>
+                        </svg>
+                        <p>JPEG/PNG image frame</p>
+                    </div>
+                    <img id="framePreview" class="preview-img" alt="Crop frame preview">
+                </div>
+
+                <div class="sticker-info">
+                    <span>Sticker width: <strong id="stickerWidth">5.0</strong> cm</span>
+                    <span class="badge" id="stickerBadge">Verified</span>
+                </div>
+
+                <div class="live-feedback">
+                    <h4>Live Analysis Results</h4>
+                    <div class="feedback-metric">
+                        <span>Stem Height</span>
+                        <span><strong id="feedbackHeight">--</strong> cm</span>
+                    </div>
+                    <div class="feedback-metric">
+                        <span>Bud Diameter</span>
+                        <span><strong id="feedbackDiameter">--</strong> cm</span>
+                    </div>
+                    <div class="feedback-metric">
+                        <span>Estimated Yield</span>
+                        <span><strong id="feedbackYield">--</strong> units</span>
+                    </div>
+                    <div class="feedback-metric">
+                        <span>Confidence</span>
+                        <span><strong id="feedbackConfidence">--</strong>%</span>
+                    </div>
+                    <div class="feedback-metric">
+                        <span>Sticker Detected</span>
+                        <span><strong id="feedbackSticker">No</strong></span>
+                    </div>
+                </div>
+
+                <button class="scan-btn" id="runScanBtn" disabled>Run AI Depth & Yield Analysis</button>
+            </div>
+        </section>
+
+        <section id="page-logs" class="page" role="tabpanel" aria-labelledby="logs-tab">
+            <div class="logs-section">
+                <div class="search-filters">
+                    <input type="text" id="blockFilter" placeholder="Filter by block name...">
+                    <select id="cropFilter">
+                        <option value="all">All Crop Types</option>
+                        <option value="roses">Roses</option>
+                        <option value="carnations">Carnations</option>
+                        <option value="chrysanthemums">Chrysanthemums</option>
+                    </select>
+                    <input type="date" id="dateFrom">
+                    <input type="date" id="dateTo">
+                </div>
+
+                <div class="data-table-wrapper">
+                    <table class="scan-data-table">
+                        <thead>
+                            <tr>
+                                <th>Block Name</th>
+                                <th>Crop Type</th>
+                                <th>Timestamp</th>
+                                <th>Stem Height (cm)</th>
+                                <th>Bud Diameter (cm)</th>
+                                <th>Confidence</th>
+                                <th>Yield Units</th>
+                            </tr>
+                        </thead>
+                        <tbody id="scanTableBody">
+                            <!-- Populated by JavaScript -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+
+        <section id="page-forecasts" class="page" role="tabpanel" aria-labelledby="forecasts-tab">
+            <div class="forecasts-section">
+                <div class="projection-summary">
+                    <h3>30-Day Export Volume Projections</h3>
+                    <div class="projection-cards" id="projectionCards">
+                        <!-- Populated by JavaScript -->
+                    </div>
+                </div>
+
+                <div class="dispatch-windows">
+                    <h3>Cold-Chain Dispatch Readiness</h3>
+                    <div class="dispatch-table" id="dispatchTable">
+                        <!-- Populated by JavaScript -->
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <script src="/js/app.js"></script>
+    <script src="/js/scanner.js"></script>
+    <script src="/js/logs.js"></script>
+    <script src="/js/forecasts.js"></script>
+</body>
+</html>
